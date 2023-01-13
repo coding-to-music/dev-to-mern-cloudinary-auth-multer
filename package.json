@@ -8,12 +8,12 @@
     "node": "16.x"
   },
   "scripts": {
+    "dev": "nodemon server/index.js",
     "start": "node server/index.js",
     "build": "cd client && npm install && npm run build",
     "deploy": "git add . && git commit -m Build && git push",
     "oldtest": "echo \"Error: no test specified\" && exit 1",
-    "oldstart": "node server/app.js",
-    "dev": "nodemon server/app.js"
+    "oldstart": "node server/app.js"
   },
   "author": "Eknoorpreet Singh",
   "license": "ISC",
@@ -40,7 +40,7 @@
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.20"
   },
   "cacheDirectories": [
     "node_modules",
