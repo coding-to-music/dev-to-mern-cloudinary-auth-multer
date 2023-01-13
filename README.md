@@ -1,6 +1,6 @@
 # dev-to-mern-cloudinary
 
-# 🚀 Javascript full-stack 🚀
+# 🚀 A DEV.to clone using MERN stack 🚀
 
 ## MERN Stack
 
@@ -96,7 +96,6 @@ In `client/.env`:
 REACT_APP_BASE_URL=http://localhost:5000/api
 REACT_APP_SOCKET_IO_URL=http://localhost:5000
 REACT_APP_GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
-REACT_APP_GITHUB_CLIENT_ID=<GITHUB_CLIENT_ID>
 REACT_APP_FB_APP_ID=<FACEBOOK_CLIENT_ID>
 ```
 

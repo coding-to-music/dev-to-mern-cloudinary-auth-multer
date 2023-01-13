@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server/index.js",
     "build": "cd client && npm install && npm run build",
-    "deploy": "git add . && git commit -m Heroku && git push && git push heroku && heroku logs --tail --remote heroku",
+    "deploy": "git add . && git commit -m Build && git push",
     "oldtest": "echo \"Error: no test specified\" && exit 1",
     "oldstart": "node server/app.js",
     "dev": "nodemon server/app.js"
