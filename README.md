@@ -50,7 +50,7 @@ TWITTER_CONSUMER_KEY = //Twitter's Consumer key
 TWITTER_CONSUMER_SECRET = //Twitter's Consumer Secret
 ```
 
-## upgrade root-level package.json
+## upgrade root-level (server) package.json
 
 ```
  axios                                                        ^0.26.1  →    ^1.2.2
@@ -98,6 +98,9 @@ Run npm install to install new versions.
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "react-facebook-login": "^4.1.1",
+    "react-github-login": "^1.0.3",
+    "react-google-login": "^5.2.2",
+    "react-login-github": "^1.0.8",
 ```
 
 ## Overview

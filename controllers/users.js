@@ -1,42 +1,42 @@
-const { validationResult } = require('express-validator');
-const axios = require('axios');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
-const { OAuth2Client } = require('google-auth-library');
-require('dotenv').config();
+const { validationResult } = require("express-validator");
+const axios = require("axios");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const TwitterStrategy = require("passport-twitter").Strategy;
+const { OAuth2Client } = require("google-auth-library");
+require("dotenv").config();
 const { GOOGLE_API_KEY, JWT_KEY, GH_CLIENT_ID, GH_CLIENT_SECRET } = process.env;
 const client = new OAuth2Client(GOOGLE_API_KEY);
-const HttpError = require('../models/http-error');
-const User = require('../models/user');
-const Post = require('../models/post');
-const { fileUpload } = require('../middleware/file-upload');
-const { createJWTtoken } = require('../utils');
+const HttpError = require("../models/http-error");
+const User = require("../models/user");
+const Post = require("../models/post");
+const { fileUpload } = require("../middleware/file-upload");
+const { createJWTtoken } = require("../utils");
 const DEFAULT_AVATAR =
-  'https://res.cloudinary.com/drkvr9wta/image/upload/v1647701003/undraw_profile_pic_ic5t_ncxyyo.png';
+  "https://res.cloudinary.com/drkvr9wta/image/upload/v1647701003/undraw_profile_pic_ic5t_ncxyyo.png";
 
 const {
   followNotification,
   removeFollowNotification,
-} = require('../controllers/notifications');
-const { uploadToCloudinary } = require('../utils');
+} = require("../controllers/notifications");
+const { uploadToCloudinary } = require("../utils");
 
 const getUserById = async (req, res, next) => {
   let { userId } = req.params;
   let user;
   try {
-    user = await User.findById(userId, '-password')
+    user = await User.findById(userId, "-password")
       .populate({
-        path: 'posts',
+        path: "posts",
         populate: {
-          path: 'tags',
+          path: "tags",
         },
       })
-      .populate('followedTags');
+      .populate("followedTags");
     //exclude password, i.e. return only name and email
   } catch (err) {
-    return next(new HttpError('Getting user failed, please try again!', 500));
+    return next(new HttpError("Getting user failed, please try again!", 500));
   }
   res.status(200).json({
     user: user.toObject({ getters: true }),
@@ -48,7 +48,7 @@ const signup = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return next(
-      new HttpError('Invalid inputs passed, please check your data', 422)
+      new HttpError("Invalid inputs passed, please check your data", 422)
     );
   }
   const { name, email, password } = req.body;
@@ -58,13 +58,13 @@ const signup = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email });
   } catch (err) {
-    return next(new HttpError('Signing up failed, please try again!', 500));
+    return next(new HttpError("Signing up failed, please try again!", 500));
   }
 
   //user already exists => tell him/her to login
   if (existingUser) {
     return next(
-      new HttpError('User already exists, please login instead', 422)
+      new HttpError("User already exists, please login instead", 422)
     );
   }
 
@@ -73,7 +73,7 @@ const signup = async (req, res, next) => {
   try {
     hashedPassword = await bcrypt.hash(password, 12); //12 - number of salting rounds (can't be reverse-engineered)
   } catch (err) {
-    return next(new HttpError('Could not create user, please try again', 500));
+    return next(new HttpError("Could not create user, please try again", 500));
   }
 
   const imageUrl = await uploadToCloudinary(req.file);
@@ -90,7 +90,7 @@ const signup = async (req, res, next) => {
   try {
     await createdUser.save();
   } catch (err) {
-    return next(new HttpError('Signup failed, please try again', 500));
+    return next(new HttpError("Signup failed, please try again", 500));
   }
 
   //generate a token
@@ -100,10 +100,10 @@ const signup = async (req, res, next) => {
       //takes payload (the data you want to encode)
       { userId: createdUser.id, email: createdUser.email },
       JWT_KEY,
-      { expiresIn: '1h' } //token expires in 1 hr
+      { expiresIn: "1h" } //token expires in 1 hr
     );
   } catch (err) {
-    return next(new HttpError('Signup failed, please try again', 500));
+    return next(new HttpError("Signup failed, please try again", 500));
   }
 
   res.status(201).json({
@@ -122,14 +122,14 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   let existingUser;
   try {
-    existingUser = await User.findOne({ email }).populate('followedTags');
+    existingUser = await User.findOne({ email }).populate("followedTags");
   } catch (err) {
-    return next(new HttpError('Logging in failed, please try again.', 500));
+    return next(new HttpError("Logging in failed, please try again.", 500));
   }
 
   //user doesn't exist (invalid credentials)
   if (!existingUser) {
-    return next(new HttpError('Invalid credentials, login failed!', 403));
+    return next(new HttpError("Invalid credentials, login failed!", 403));
   }
 
   //validate password
@@ -138,13 +138,13 @@ const login = async (req, res, next) => {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
     return next(
-      new HttpError('Login failed, please check your credentials!', 500)
+      new HttpError("Login failed, please check your credentials!", 500)
     );
   }
 
   //invalid password
   if (!isValidPassword) {
-    return next(new HttpError('Invalid credentials, login failed!', 401));
+    return next(new HttpError("Invalid credentials, login failed!", 401));
   }
 
   //everything ok => generate token
@@ -153,10 +153,10 @@ const login = async (req, res, next) => {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
       JWT_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: "1h" }
     );
   } catch (err) {
-    return next(new HttpError('Login failed, please try again', 500));
+    return next(new HttpError("Login failed, please try again", 500));
   }
   res.json({
     user: {
@@ -188,12 +188,12 @@ const googleLogin = async (req, res, next) => {
       //Has the user signed in with google before
       emailVerified = true;
 
-      existingUser = await User.findOne({ email }, '-password').populate(
-        'followedTags'
+      existingUser = await User.findOne({ email }, "-password").populate(
+        "followedTags"
       );
       user = existingUser;
     } catch (err) {
-      return next(new HttpError('Signing up failed, please try again!', 500));
+      return next(new HttpError("Signing up failed, please try again!", 500));
     }
   }
 
@@ -207,7 +207,7 @@ const googleLogin = async (req, res, next) => {
       hashedPassword = await bcrypt.hash(email + name + email, 12); //12 - number of salting rounds (can't be reverse-engineered)
     } catch (err) {
       return next(
-        new HttpError('Could not create user, please try again', 500)
+        new HttpError("Could not create user, please try again", 500)
       );
     }
 
@@ -217,11 +217,11 @@ const googleLogin = async (req, res, next) => {
       password: hashedPassword,
       avatar: picture || DEFAULT_AVATAR,
     });
-    user = user.populate('followedTags');
+    user = user.populate("followedTags");
     try {
       await user.save();
     } catch (err) {
-      return next(new HttpError('Signup failed, please try again', 500));
+      return next(new HttpError("Signup failed, please try again", 500));
     }
   }
 
@@ -231,10 +231,10 @@ const googleLogin = async (req, res, next) => {
       //takes payload (the data you want to encode)
       { userId: user.id, email: user.email },
       JWT_KEY,
-      { expiresIn: '1h' } //token expires in 1 hr
+      { expiresIn: "1h" } //token expires in 1 hr
     );
   } catch (err) {
-    return next(new HttpError('Signup failed, please try again', 500));
+    return next(new HttpError("Signup failed, please try again", 500));
   }
 
   res.status(201).json({
@@ -254,19 +254,19 @@ const githubLogin = async (req, res, next) => {
   const { code } = req.body;
   if (!code) {
     return next(
-      new HttpError('Signing up with GitHub failed, please try again!', 500)
+      new HttpError("Signing up with GitHub failed, please try again!", 500)
     );
   }
   const response = await axios({
-    method: 'post',
+    method: "post",
     url: `https://github.com/login/oauth/access_token?client_id=${GH_CLIENT_ID}&client_secret=${GH_CLIENT_SECRET}&code=${code}`,
     headers: {
-      accept: 'application/json',
+      accept: "application/json",
     },
   });
   const { access_token } = response.data;
   const { data } = await axios({
-    method: 'get',
+    method: "get",
     url: `https://api.github.com/user`,
     headers: {
       Authorization: `token ${access_token}`,
@@ -276,12 +276,12 @@ const githubLogin = async (req, res, next) => {
   let existingUser;
   let user;
   try {
-    existingUser = await User.findOne({ email }, '-password').populate(
-      'followedTags'
+    existingUser = await User.findOne({ email }, "-password").populate(
+      "followedTags"
     );
     user = existingUser;
   } catch (err) {
-    return next(new HttpError('Signing up failed, please try again!', 500));
+    return next(new HttpError("Signing up failed, please try again!", 500));
   }
 
   if (!existingUser) {
@@ -290,7 +290,7 @@ const githubLogin = async (req, res, next) => {
       hashedPassword = await bcrypt.hash(email + name + email, 12); //12 - number of salting rounds (can't be reverse-engineered)
     } catch (err) {
       return next(
-        new HttpError('Could not create user, please try again', 500)
+        new HttpError("Could not create user, please try again", 500)
       );
     }
     user = new User({
@@ -299,12 +299,12 @@ const githubLogin = async (req, res, next) => {
       password: hashedPassword,
       avatar: avatar_url || DEFAULT_AVATAR,
     });
-    user = user.populate('followedTags');
+    user = user.populate("followedTags");
 
     try {
       await user.save();
     } catch (err) {
-      return next(new HttpError('Signup failed, please try again', 500));
+      return next(new HttpError("Signup failed, please try again", 500));
     }
   }
   let token = createJWTtoken(user.id, user.email);
@@ -321,67 +321,67 @@ const githubLogin = async (req, res, next) => {
   });
 };
 
-const fbLogin = async (req, res, next) => {
-  const { accessToken, userId } = req.body;
+// const fbLogin = async (req, res, next) => {
+//   const { accessToken, userId } = req.body;
 
-  let urlGraphFb = `https://graph.facebook.com/v2.11/${userId}/?fields=id,name,email&access_token=${accessToken}`;
+//   let urlGraphFb = `https://graph.facebook.com/v2.11/${userId}/?fields=id,name,email&access_token=${accessToken}`;
 
-  const response = await axios({
-    method: 'post',
-    url: urlGraphFb,
-    headers: {
-      accept: 'application/json',
-    },
-  });
-  const { name, email } = response.data;
-  let existingUser;
-  let user;
-  try {
-    existingUser = await User.findOne({ email }, '-password').populate(
-      'followedTags'
-    );
-    user = existingUser;
-  } catch (err) {
-    return next(new HttpError('Signing up failed, please try again!', 500));
-  }
+//   const response = await axios({
+//     method: 'post',
+//     url: urlGraphFb,
+//     headers: {
+//       accept: 'application/json',
+//     },
+//   });
+//   const { name, email } = response.data;
+//   let existingUser;
+//   let user;
+//   try {
+//     existingUser = await User.findOne({ email }, '-password').populate(
+//       'followedTags'
+//     );
+//     user = existingUser;
+//   } catch (err) {
+//     return next(new HttpError('Signing up failed, please try again!', 500));
+//   }
 
-  if (!existingUser) {
-    let hashedPassword;
-    try {
-      hashedPassword = await bcrypt.hash(email + name + email, 12); //12 - number of salting rounds (can't be reverse-engineered)
-    } catch (err) {
-      return next(
-        new HttpError('Could not create user, please try again', 500)
-      );
-    }
-    user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      avatar: DEFAULT_AVATAR,
-    });
-    user = user.populate('followedTags');
+//   if (!existingUser) {
+//     let hashedPassword;
+//     try {
+//       hashedPassword = await bcrypt.hash(email + name + email, 12); //12 - number of salting rounds (can't be reverse-engineered)
+//     } catch (err) {
+//       return next(
+//         new HttpError('Could not create user, please try again', 500)
+//       );
+//     }
+//     user = new User({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       avatar: DEFAULT_AVATAR,
+//     });
+//     user = user.populate('followedTags');
 
-    try {
-      await user.save();
-    } catch (err) {
-      return next(new HttpError('Signup failed, please try again', 500));
-    }
-  }
+//     try {
+//       await user.save();
+//     } catch (err) {
+//       return next(new HttpError('Signup failed, please try again', 500));
+//     }
+//   }
 
-  const token = createJWTtoken(user.id, user.email);
-  res.status(201).json({
-    user: {
-      name: user.name,
-      userId: user.id,
-      email: user.email,
-      token,
-      bio: user.bio,
-      avatar: user.avatar,
-      tags: user.followedTags,
-    },
-  });
-};
+//   const token = createJWTtoken(user.id, user.email);
+//   res.status(201).json({
+//     user: {
+//       name: user.name,
+//       userId: user.id,
+//       email: user.email,
+//       token,
+//       bio: user.bio,
+//       avatar: user.avatar,
+//       tags: user.followedTags,
+//     },
+//   });
+// };
 
 // when login is successful, retrieve user info
 const twitterLogin = (req, res) => {
@@ -413,14 +413,14 @@ const twitterLogin = (req, res) => {
 const twitterFailure = (req, res) => {
   res.status(401).json({
     success: false,
-    message: 'user failed to authenticate.',
+    message: "user failed to authenticate.",
   });
 };
 
 const twitterLogout = (req, res) => {
   if (req.user) {
     req.logout();
-    res.json({ message: 'Logout successful' });
+    res.json({ message: "Logout successful" });
   }
 };
 
@@ -441,7 +441,7 @@ const updateUser = async (req, res, next) => {
       { new: true },
       (err, data) => {
         if (err) {
-          return next(new HttpError('Could not find user to update', 500));
+          return next(new HttpError("Could not find user to update", 500));
         } else {
           const { name, id: userId, bio, email, avatar } = data;
           res.status(200).json({ user: { name, userId, bio, email, avatar } });
@@ -449,7 +449,7 @@ const updateUser = async (req, res, next) => {
       }
     );
   } catch (err) {
-    return next(new HttpError('Could not update user', 500));
+    return next(new HttpError("Could not update user", 500));
   }
 };
 
@@ -470,7 +470,7 @@ const followUser = async (req, res, next) => {
     await followNotification(userId, followId);
     res.status(201).json(user);
   } catch (err) {
-    return next(new HttpError('Follow failed, please try again', 400));
+    return next(new HttpError("Follow failed, please try again", 400));
   }
 };
 
@@ -491,7 +491,7 @@ const unfollowUser = async (req, res, next) => {
     await removeFollowNotification(userId, followId);
     res.status(201).json(user);
   } catch (err) {
-    return next(new HttpError('Unfollow failed, please try again', 400));
+    return next(new HttpError("Unfollow failed, please try again", 400));
   }
 };
 
@@ -500,7 +500,7 @@ exports.signup = signup;
 exports.login = login;
 exports.googleLogin = googleLogin;
 exports.githubLogin = githubLogin;
-exports.fbLogin = fbLogin;
+// exports.fbLogin = fbLogin;
 exports.twitterFailure = twitterFailure;
 exports.twitterLogin = twitterLogin;
 exports.twitterLogout = twitterLogout;
