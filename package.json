@@ -8,36 +8,34 @@
     "node": "16.x"
   },
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "build": "cd client && npm install && npm run build",
-    "deploy": "git add . && git commit -m Build && git push",
-    "oldtest": "echo \"Error: no test specified\" && exit 1",
-    "oldstart": "node server/app.js"
+    "deploy": "git add . && git commit -m Build && git push"
   },
   "author": "Eknoorpreet Singh",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.2.2",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cloudinary": "^1.28.1",
+    "body-parser": "^1.20.1",
+    "cloudinary": "^1.33.0",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "datauri": "^4.1.0",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.12.0",
-    "google-auth-library": "^7.10.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.2",
-    "mongoose-unique-validator": "^2.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "google-auth-library": "^8.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.3",
+    "mongoose-unique-validator": "^3.1.0",
     "multer": "^1.4.4",
-    "passport": "^0.5.2",
+    "passport": "^0.6.0",
     "passport-twitter": "^1.0.4",
-    "socket.io": "^4.4.1",
-    "uuid": "^8.3.2",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.4.0"
+    "socket.io": "^4.5.4",
+    "uuid": "^9.0.0",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.19.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

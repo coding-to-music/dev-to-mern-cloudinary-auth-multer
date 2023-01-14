@@ -28,7 +28,7 @@ REACT_APP_SOCKET_IO_URL=http://localhost:5000
 REACT_APP_GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
 REACT_APP_FB_APP_ID=<FACEBOOK_CLIENT_ID>
 
-In `server/.env`:
+In `.env`:
 
 DB_USER = //user name for db
 DB_PASSWORD = //password for db
@@ -49,6 +49,49 @@ GH_CLIENT_SECRET = //Github's Client Secret
 TWITTER_CONSUMER_KEY = //Twitter's Consumer key
 TWITTER_CONSUMER_SECRET = //Twitter's Consumer Secret
 ```
+
+## upgrade root-level package.json
+
+```
+ axios                                                        ^0.26.1  →    ^1.2.2
+ body-parser                                                  ^1.19.0  →   ^1.20.1
+ cloudinary                                                   ^1.28.1  →   ^1.33.0
+ dotenv                                                       ^16.0.0  →   ^16.0.3
+ express                                                      ^4.17.1  →   ^4.18.2
+ express-validator                                            ^6.12.0  →   ^6.14.2
+ google-auth-library                                          ^7.10.2  →    ^8.7.0
+ jsonwebtoken                                                  ^8.5.1  →    ^9.0.0
+ mongoose                                                     ^5.13.2  →    ^6.8.3
+ mongoose-unique-validator                                     ^2.0.3  →    ^3.1.0
+ passport                                                      ^0.5.2  →    ^0.6.0
+ socket.io                                                     ^4.4.1  →    ^4.5.4
+ uWebSockets.js             github:uNetworking/uWebSockets.js#v20.4.0  →  v20.19.0
+ uuid                                                          ^8.3.2  →    ^9.0.0
+```
+
+## upgrade client package.json
+
+```
+ @testing-library/jest-dom    ^5.12.0  →  ^5.16.5
+ @testing-library/react       ^11.2.7  →  ^13.4.0
+ @testing-library/user-event  ^12.8.3  →  ^14.4.3
+ easymde                      ^2.16.1  →  ^2.18.0
+ query-string                  ^7.0.1  →   ^8.1.0
+ react                        ^17.0.2  →  ^18.2.0
+ react-dom                    ^17.0.2  →  ^18.2.0
+ react-login-github            ^1.0.7  →   ^1.0.8
+ react-markdown                ^8.0.0  →   ^8.0.4
+ react-router-dom              ^5.2.0  →   ^6.6.2
+ react-scripts                 ^5.0.0  →   ^5.0.1
+ react-simplemde-editor        ^5.0.2  →   ^5.2.0
+ react-transition-group        ^4.4.2  →   ^4.4.5
+ socket.io-client              ^4.4.1  →   ^4.5.4
+ web-vitals                    ^1.1.2  →   ^3.1.1
+
+Run npm install to install new versions.
+```
+
+## Overview
 
 <h1 align="center">
   <br>
