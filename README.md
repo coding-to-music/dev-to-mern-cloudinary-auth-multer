@@ -14,6 +14,42 @@ by Eknoorpreet Singh https://github.com/eknoorpreet
 
 https://github.com/eknoorpreet/dev.to-clone
 
+## Environment Values
+
+```
+CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
+
+In `client/.env`:
+
+REACT_APP_BASE_URL=http://localhost:5000/api
+REACT_APP_SOCKET_IO_URL=http://localhost:5000
+REACT_APP_GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
+REACT_APP_FB_APP_ID=<FACEBOOK_CLIENT_ID>
+
+In `server/.env`:
+
+DB_USER = //user name for db
+DB_PASSWORD = //password for db
+DB_NAME = // name for db
+JWT_KEY = //random string
+COOKIE_KEY = //random string;
+NODE_ENV = 'development';
+CLIENT_URL = //the port of React app, ex: 'http://localhost:3000';
+
+//Google will provide you with the following credentials
+GOOGLE_API_KEY = //API key
+
+//Github will provide you with the following credentials
+GH_CLIENT_ID = //Github's Client ID
+GH_CLIENT_SECRET = //Github's Client Secret
+
+// Twitter will provide you with the following credentials
+TWITTER_CONSUMER_KEY = //Twitter's Consumer key
+TWITTER_CONSUMER_SECRET = //Twitter's Consumer Secret
+```
+
 <h1 align="center">
   <br>
   <a href="https://devfrom.netlify.app"><img src="https://res.cloudinary.com/practicaldev/image/fetch/s--QG4or-x4--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/jrzutxzs0l43wqvw5k8z.png" alt="DEV.to Clone" width="200"></a>
