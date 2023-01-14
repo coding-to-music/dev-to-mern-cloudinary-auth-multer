@@ -68,7 +68,7 @@ app.use("/api/comments", commentsRoutes);
 app.use("/api/tags", tagsRoutes);
 
 app.get("/", (req, res) => {
-  res.send("DEV.to is running");
+  res.send("DEV.to api backend is running");
 });
 
 // app.use((req, res, next) => {
@@ -91,12 +91,13 @@ app.use((error, req, res, next) => {
 
 const port = PORT || 5000;
 
+// useCreateIndex: true,
+// useFindAndModify: false,
+
 mongoose
   .connect(MONGO_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then(() => {
     httpServer.listen(port, () => {

@@ -91,6 +91,15 @@ TWITTER_CONSUMER_SECRET = //Twitter's Consumer Secret
 Run npm install to install new versions.
 ```
 
+## Removed from client/package.json
+
+```
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "react-facebook-login": "^4.1.1",
+```
+
 ## Overview
 
 <h1 align="center">
