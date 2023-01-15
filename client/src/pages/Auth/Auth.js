@@ -36,39 +36,39 @@ const Auth = ({ newUser }) => {
   const { sendReq, error, clearError } = useHttpClient();
 
   //handle google auth
-  const handleGoogleAuth = async (googleData) => {
-    //getting tokenID from GLogin
-    const responseData = await sendReq(
-      `${process.env.REACT_APP_BASE_URL}/users/auth/google`,
-      "POST",
-      JSON.stringify({
-        tokenId: googleData.tokenId,
-      }),
-      {
-        "Content-Type": "application/json", //inform backend the type of data being sent
-      }
-    );
-    let { user } = responseData;
-    user = { ...user, token: googleData.tokenId };
-    login(user); //log the user in
-    history.push("/");
-  };
+  // const handleGoogleAuth = async (googleData) => {
+  //   //getting tokenID from GLogin
+  //   const responseData = await sendReq(
+  //     `${process.env.REACT_APP_BASE_URL}/users/auth/google`,
+  //     "POST",
+  //     JSON.stringify({
+  //       tokenId: googleData.tokenId,
+  //     }),
+  //     {
+  //       "Content-Type": "application/json", //inform backend the type of data being sent
+  //     }
+  //   );
+  //   let { user } = responseData;
+  //   user = { ...user, token: googleData.tokenId };
+  //   login(user); //log the user in
+  //   history.push("/");
+  // };
 
-  const handleGithubAuth = async (githubData) => {
-    const { code } = githubData;
-    const responseData = await sendReq(
-      `${process.env.REACT_APP_BASE_URL}/users/auth/github`,
-      "POST",
-      JSON.stringify({ code }),
-      {
-        "Content-Type": "application/json", //inform backend the type of data being sent
-      }
-    );
-    let { user } = responseData;
-    user = { ...user, token: githubData.code };
-    login(user); //log the user in
-    history.push("/");
-  };
+  // const handleGithubAuth = async (githubData) => {
+  //   const { code } = githubData;
+  //   const responseData = await sendReq(
+  //     `${process.env.REACT_APP_BASE_URL}/users/auth/github`,
+  //     "POST",
+  //     JSON.stringify({ code }),
+  //     {
+  //       "Content-Type": "application/json", //inform backend the type of data being sent
+  //     }
+  //   );
+  //   let { user } = responseData;
+  //   user = { ...user, token: githubData.code };
+  //   login(user); //log the user in
+  //   history.push("/");
+  // };
 
   // const handleFBAuth = async (fbData) => {
   //   const responseData = await sendReq(
@@ -94,6 +94,8 @@ const Auth = ({ newUser }) => {
       let responseData;
       if (newUser) {
         const formData = appendData(formValues);
+
+        console.log("formData ", formData);
         responseData = await sendReq(
           `${process.env.REACT_APP_BASE_URL}/users/signup`,
           "POST",
