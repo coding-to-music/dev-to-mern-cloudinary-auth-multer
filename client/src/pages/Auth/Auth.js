@@ -6,8 +6,8 @@ import { loginForm, signupForm } from "../../utils/formConfig";
 
 import { AuthContext } from "../../context/auth";
 import ErrorModal from "../../components/Modal/ErrorModal";
-import GHLogin from "../../components/Auth/GHLogin";
-import GLogin from "../../components/Auth/GLogin";
+// import GHLogin from "../../components/Auth/GHLogin";
+// import GLogin from "../../components/Auth/GLogin";
 // import FBLogin from '../../components/Auth/FBLogin';
 import TwitterLogin from "../../components/Auth/TwitterLogin";
 import Welcome from "../../components/Auth/Welcome";
@@ -120,8 +120,8 @@ const Auth = ({ newUser }) => {
       <div className="container container-auth">
         <Welcome />
         <div className="auth__social">
-          <GLogin onLogin={handleGoogleAuth} />
-          <GHLogin onLogin={handleGithubAuth} />
+          {/* <GLogin onLogin={handleGoogleAuth} /> */}
+          {/* <GHLogin onLogin={handleGithubAuth} /> */}
           {/* <FBLogin onLogin={handleFBAuth} /> */}
           <TwitterLogin />
         </div>

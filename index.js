@@ -94,12 +94,15 @@ const port = PORT || 5000;
 // useCreateIndex: true,
 // useFindAndModify: false,
 
+mongoose.set("strictQuery", false);
+
 mongoose
   .connect(MONGO_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
   .then(() => {
+    console.log("MongoDB is connected");
     httpServer.listen(port, () => {
       console.log("Starting server on http://localhost:" + port);
     });
