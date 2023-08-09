@@ -1,14 +1,14 @@
-# dev-to-mern-cloudinary
+# dev-to-mern-cloudinary-auth-multer
 
-# 🚀 A DEV.to clone using MERN stack 🚀
+# 🚀 A DEV.to clone using MERN stack, React 17 and MongoDB 🚀
 
 ## MERN Stack
 
 ### React / Express / MongoDB / Redux
 
-https://github.com/coding-to-music/dev-to-mern-cloudinary
+https://github.com/coding-to-music/dev-to-mern-cloudinary-auth-multer
 
-https://dev-to-mern-cloudinary.herokuapp.com
+https://dev-to-mern-cloudinary-auth-multer.vercel.app/
 
 by Eknoorpreet Singh https://github.com/eknoorpreet
 
@@ -58,7 +58,7 @@ git add .
 git remote remove origin
 git commit -m "first commit"
 git branch -M main
-git remote add origin git@github.com:coding-to-music/dev-to-mern-cloudinary.git
+git remote add origin git@github.com:coding-to-music/dev-to-mern-cloudinary-auth-multer.git
 git push -u origin main
 ```
 

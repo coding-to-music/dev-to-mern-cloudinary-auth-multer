@@ -1,5 +1,5 @@
 {
-  "name": "dev-to-mern-cloudinary",
+  "name": "dev-to-mern-cloudinary-auth-multer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
